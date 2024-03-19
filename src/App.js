@@ -6,35 +6,35 @@
 //     console.error(error);
 //   });
 
-import React,{Fragment} from "react";
+import React, { Fragment } from "react";
 import Header from "./componentes/layout/Header";
 import Nav from "./componentes/layout/Nav";
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Alumnos from "./componentes/alumnos/Alumnos";
 import Carreras from "./componentes/carreras/Carreras";
 import Calificaciones from "./componentes/calificaciones/Calificaciones";
 import NuevoAlumno from "./componentes/alumnos/NuevoAlumno";
+import EditarAlumno from "./componentes/alumnos/EditarAlumno";
 
 function App() {
   return (
     <Router>
       <Fragment>
-        <Header/>
-          <div class="grid contenedor contenido-principal">
-            <Nav/>
-            <main class="caja-contenido col-9">
-            
+        <Header />
+        <div class="grid contenedor contenido-principal">
+          <Nav />
+          <main class="caja-contenido col-9">
             <Routes>
-              <Route path="/" element={<Alumnos/>}/>
-              <Route path="/carreras" element={<Carreras/>}/>
-              <Route path="/calificaciones" element={<Calificaciones/>}/>
-              <Route path="/nuevo-alumno" element={<NuevoAlumno/>}/>
+              <Route path="/" element={<Alumnos />} />
+              <Route path="/carreras" element={<Carreras />} />
+              <Route path="/calificaciones" element={<Calificaciones />} />
+              <Route path="/nuevo-alumno" element={<NuevoAlumno />} />
+              <Route path="/editaralumno/:id" element={<EditarAlumno />} />
             </Routes>
-            
-            </main>
-          </div> 
+          </main>
+        </div>
       </Fragment>
-    </Router> 
+    </Router>
   );
 }
 

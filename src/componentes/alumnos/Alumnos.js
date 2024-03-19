@@ -45,10 +45,10 @@ function Alumnnos() {
               <p>{alumno.UNAL_EDAD}</p>
             </div>
             <div class="acciones">
-              <a href="#" class="btn btn-azul">
+              <Link to={"/editaralumno/:id"} class="btn btn-azul">
                 <i className="fas fa-pen-alt"></i>
                 Editar Alumno
-              </a>
+              </Link>
               <button
                 type="button"
                 class="btn btn-rojo btn-eliminar"
