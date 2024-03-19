@@ -1,7 +1,11 @@
 import React, { Fragment, useDebugValue, useEffect, useState } from "react";
 import ClienteAxios from "../../config/axios";
+import { useParams } from "react-router-dom";
 
 function EditarAlumno() {
+  let params = useParams();
+  console.log(params.id);
+
   const [carreras, guardarCarreras] = useState([]);
   const ConsultarAPI = async () => {
     const CarreraConsulta = await ClienteAxios.get("/carreras");

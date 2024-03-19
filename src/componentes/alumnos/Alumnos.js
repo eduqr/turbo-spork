@@ -45,7 +45,7 @@ function Alumnnos() {
               <p>{alumno.UNAL_EDAD}</p>
             </div>
             <div class="acciones">
-              <Link to={"/editaralumno/:id"} class="btn btn-azul">
+              <Link to={"/editaralumno/" + alumno.UNAL_ID} class="btn btn-azul">
                 <i className="fas fa-pen-alt"></i>
                 Editar Alumno
               </Link>
