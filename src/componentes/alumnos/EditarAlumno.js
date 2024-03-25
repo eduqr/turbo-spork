@@ -1,4 +1,4 @@
-import React, { Fragment, useDebugValue, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import ClienteAxios from "../../config/axios";
 import { useParams } from "react-router-dom";
 
@@ -6,56 +6,65 @@ function EditarAlumno() {
   let params = useParams();
   console.log(params.id);
 
-  const [carreras, guardarCarreras] = useState([]);
-  const ConsultarAPI = async () => {
-    const CarreraConsulta = await ClienteAxios.get("/carreras");
-    guardarCarreras(CarreraConsulta.data);
-  };
-  useEffect(() => {
-    ConsultarAPI();
-  }, []);
+  const [carreras, guardarCarrera] = useState([]);
 
-  const [alumno, guardarAlumnos] = useState({
-    action: "insert",
+  //const [alumno, guardareditarAlumno]         = useState([]);
+  const [alumno, guardareditarAlumno] = useState({
+    action: "update",
     carrera: "",
     nombre: "",
     apellido: "",
     edad: "",
     email: "",
     estado: "",
+    id: params.id,
   });
 
+  const ConsultarAPI = async () => {
+    const CarreraConsulta = await ClienteAxios.get("/carreras");
+    const AlumnoConsulta = await ClienteAxios.get("/alumnos/" + params.id + "");
+    //COLOCAR STATE
+    guardarCarrera(CarreraConsulta.data);
+
+    guardareditarAlumno(AlumnoConsulta.data[0]);
+  };
+  useEffect(() => {
+    ConsultarAPI();
+  }, []);
+
+  /**codigo para validar formulario */
+
   const actualizarState = (e) => {
-    guardarAlumnos({
+    console.log(e.target.value);
+    guardareditarAlumno({
       ...alumno,
       [e.target.name]: e.target.value,
     });
   };
 
   const validarAlumno = () => {
-    const { carrera, nombre, apellido, edad, email, estado } = alumno;
+    const { nombre, apellido, edad, email } = alumno;
     let valido =
-      !carrera.length ||
-      !nombre.length ||
-      !apellido.length ||
-      !edad.length ||
-      !email.length ||
-      !estado.length;
+      !nombre.length || !apellido.length || !edad.length || !email.length;
     return valido;
   };
 
-  const agregarAlumno = (e) => {
+  /*enviar post**/
+
+  const ModificarAlumno = (e) => {
     e.preventDefault();
     ClienteAxios.post("/alumnos", alumno).then((res) => {
       console.log(res);
-      alert("Alumno agregado");
+      alert("Alumno Modificado");
+      window.location.reload();
     });
   };
+
   return (
     <Fragment>
-      <h2>Nuevo Alumno</h2>
+      <h2>Editar Alumno</h2>
 
-      <form onSubmit={agregarAlumno}>
+      <form onSubmit={ModificarAlumno}>
         <legend>Llena todos los campos</legend>
 
         <div class="campo">
@@ -65,6 +74,7 @@ function EditarAlumno() {
             placeholder="Nombre Alumno"
             name="nombre"
             onChange={actualizarState}
+            value={alumno.nombre}
           />
         </div>
 
@@ -75,15 +85,20 @@ function EditarAlumno() {
             placeholder="Apellido Alumno"
             name="apellido"
             onChange={actualizarState}
+            value={alumno.apellido}
           />
         </div>
 
         <div class="campo">
           <label>Carrera:</label>
           <select name="carrera" onChange={actualizarState}>
-            <option value="">Selecciona una opción</option>
             {carreras.map((carrera) => (
-              <option value={carrera.UNCR_ID}>{carrera.UNCR_CARRERA}</option>
+              <option
+                value={carrera.UNCR_ID}
+                selected={carrera.UNCR_ID === alumno.carrera}
+              >
+                {carrera.UNCR_CARRERA}
+              </option>
             ))}
           </select>
         </div>
@@ -95,6 +110,7 @@ function EditarAlumno() {
             placeholder="Email Alumno"
             name="email"
             onChange={actualizarState}
+            value={alumno.email}
           />
         </div>
 
@@ -105,16 +121,22 @@ function EditarAlumno() {
             placeholder="Edad Alumno"
             name="edad"
             onChange={actualizarState}
+            value={alumno.edad}
           />
         </div>
 
-        <div class="campo">
-          <label>Estado:</label>
+        <div className="campo">
+          <label>Estado</label>
           <select name="estado" onChange={actualizarState}>
-            <option value="">Seleccione una opción</option>
-            <option value="1">Alumno inscrito</option>
-            <option value="2">Alumno baja temporal</option>
-            <option value="3">Alumno baja definitiva</option>
+            <option value="1" selected={alumno.estado === 1}>
+              Alumno Inscrito
+            </option>
+            <option value="2" selected={alumno.estado === 2}>
+              Alumno Baja Temporal
+            </option>
+            <option value="3" selected={alumno.estado === 3}>
+              Alumno Baja Definitiva
+            </option>
           </select>
         </div>
 
@@ -122,7 +144,7 @@ function EditarAlumno() {
           <input
             type="submit"
             class="btn btn-azul"
-            value="Agregar Alumno"
+            value="Actualizar Información Alumno"
             disabled={validarAlumno()}
           />
         </div>
